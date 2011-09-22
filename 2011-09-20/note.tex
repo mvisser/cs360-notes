@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Sep 20, 2011}
+\maketitle
+
+\renewcommand{\hat}{\widehat}
+
+\textbf{A1 is due on Friday Sept 30\textsuperscript{th} at 1400h.}
+
+\section{NFAs}
+
+\subsection{Extended transition function for NFAs}
+
+\begin{equation}
+    \hat{\delta}(q,x) =  Q
+\end{equation}
+Where $Q$ is the set of states you can get to from $q$ on the input $x$.
+
+\begin{equation}
+    \hat{\delta}: Q \times \Sigma^* \to 2^Q
+\end{equation}
+
+Base case \begin{equation}
+    \hat{\delta}(q,\varepsilon) = \{q\}
+\end{equation}
+
+We can't use the same extended transition function as DFAs because
+$\hat{\delta}$ returns a set.
+
+We then use:
+\begin{equation}
+    \bigcup_{p \in \hat{\delta}(q,x)} \hat{\delta}(p,a)
+\end{equation}
+
+\section{Accepting}
+
+An NFA $M$ accepts a word $x$ if $\hat{\delta}(q_0,x) \cap F \neq \emptyset$.
+That is, from the sets that we can reach from the input string, there is at
+least one that is a final state.
+
+\section{A Theorem}
+
+\textbf{Theorem:} Let $L$ be a language that is accepted by an NFA. Then $L$ is
+accepted by a DFA.
+
+\textbf{Proof:}
+
+Given an NFA $N$, we'll construct a DFA, $D$. Then we must show that they have
+the same language. Every word in the language of $N$ is also in the language of
+$D$ and \textit{vice versa}.
+
+For every subset of states in $N$, we create a state in $D$.
+
+Given NFA $N = \left<Q_N, \Sigma, \delta_N, q_0, F_N\right>$, we construct a new
+DFA, $D = \left<Q_D, \Sigma, \delta_D, \{q_0\}, F_D\right>$ with these
+parameters.
+
+\[Q_D: 2^{Q_N}\] The set of states in $D$ is the set of all subsets of $Q_N$.
+
+\[F_D: \{S \in Q_D | S \cap F_N \neq \emptyset\}\]
+States in $D$ that correspond to a set of states in $N$ with at least one
+accepting state.
+
+\[\delta_D = (S,a) = \bigcup_{p \in S} \delta_N(p,a)\]
+The next state in $D$ is the subset of states in $N$ that is the union of all
+states reachable from the subset $S$ on input $a$.
+
+Must show: $x \in L(N) \iff x \in L(d)$ -- that is,\\
+$\hat{\delta_N}(q_0,x)\cap F_N \neq \emptyset$ $\iff \hat{\delta_D}(\{q_0\},x) \cap
+F_D \neq \emptyset$.
+
+It suffices to show
+\[
+\hat{\delta_N}\left(q,x\right) = \hat{\delta_D}\left(\{q\},x\right)
+\]
+
+We must prove the above by induction on $|X|$.
+
+Base case: $|X| = 0$, so $x = \varepsilon$.
+
+\[\hat{\delta_N}(q,\varepsilon) = \{q\} = \hat{\delta_D}(\{q\},\varepsilon)\]
+
+\textbf{Lemma:} Let $L$ be a language accepted by a DFA, then $L$ is accepted by
+an NFA.
+
+\textbf{Proof:} If we allow the DFA's transition function to return a set
+instead of just one element, it is now an NFA. This is just a trivial change to
+the transition function.
+
+\end{document}
+% vim: tw=80

@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Sep 15, 2011}
+\maketitle
+
+\section{Induction}
+
+\subsection{ Structural}
+\begin{itemize}
+    \item Binary Trees
+    \item Fibonacci numbers
+    \item sequences of letters (can think of words as recursive
+        structures)
+\end{itemize}
+
+\subsubsection{Example}
+
+Let $L$ be the smallest language over $\Sigma = \{+,a,(,)\}$ that satisfies
+these rules:
+\begin{itemize}
+    \item $a \in L$
+    \item If $w_1$ and $w_2$ are in $L$, so is ``$(w_1 + w_2)$''.
+\end{itemize}
+
+\textbf{Theorem}: No string in $L$ contains ``)(''.
+
+\textbf{Proof}:
+
+Base case: ``a'' does not contain ``)(''.
+
+Assume that words $w_1$ and $w_2$ in $L$ do not contain ``)(''.
+
+We now show that if $w_1$ and $w_2$ satisfy the condition, then $(w_1 + w_2)$
+also satisfy the condition. From the form, we know that the first two characters
+can't be ``)('' because the first character is ``(''. The last two cannot be
+``)('' because the last character is ``)''.
+
+Therefore, by structural induction, the theorem is proven. \qed
+
+\subsubsection{ Strong}
+\subsubsection{ Weak}
+
+\section{Deterministic Finite Automata (DFA)}
+
+\begin{itemize}
+    \item Given a finite input word, it moves from on input state to another.
+    \item Each move is based on one input letter.
+    \item At the end of the input it either accepts or rejects.
+\end{itemize}
+
+A vital limitation of a DFA is that it cannot look back in the input string. The
+only memory it has is in its state.
+
+\subsection{Definition}
+
+\begin{itemize}
+    \item $\Sigma$ -- finite input alphabet.
+    \item $Q$ -- set of states.
+    \item $\delta$ -- transition function.
+    \item $q_0$ -- start state.
+    \item $F$ -- set accepting states.
+\end{itemize}
+
+A DFA machine is defined as:
+
+$M = \left<Q,\Sigma,\delta,q_0,F\right>$
+
+$\delta: \Sigma \times Q \to Q$ \textit{i.e.}\ takes (symbol, state) pairs and
+outputs a state.
+
+What does it mean ``$M$ accepts $w$''?
+\begin{itemize}
+    \item Starting at $q_0$, follow transition function $\delta$ for each letter
+        in $w$.
+    \item String $w$ accepted by $M$ if at the end of $w$'s letters, we end up
+        in a final state.
+\end{itemize}
+
+\subsection{Extended Transition Function}
+
+$\hat{\delta}(q,w)$ is defined recursively:
+\begin{itemize}
+    \item $\hat{\delta}(q,\varepsilon) = q \quad \forall q$
+    \item If $|w|>0$, and $W = Xa$, then $\hat{\delta}(q(w) =
+        \delta\left(\hat{\delta}(q,X),a\right)$
+\end{itemize}
+
+\subsection{Language of an FA}
+
+$L(M)$, all words $M$ accepts. Formally,
+
+$M = \left<Q,\Sigma,\delta,q_0,F\right>$ accepts $w$ exactly when
+$\hat{\delta}(q_0,w)\in F$.
+
+$L(M) = \{ w \in \Sigma \text{ s.t. } \hat{\delta}(q_0,w)\in F\}$
+
+\subsection{Example}
+
+$x \equiv 0 \mod 3$
+
+$\Sigma = \{0,1\}$
+
+$Q = \{ q, q_0, q_1, q_2 \}$
+
+$F = \{q_0\}$
+
+
+\begin{tabular}{l|l|l}
+    start state & input & end state \\
+    \hline
+    $q$         & 0     & $q_0$     \\
+    \multicolumn{3}{c}{$\vdots$}
+\end{tabular}
+
+\section{Non-Deterministic Finite Automata (NFA)}
+
+These accept if there is at least one path that leads to an accepting state.
+Formally, we have
+\begin{itemize}
+    \item $\Sigma$ -- finite input alphabet.
+    \item $Q$ -- set of states.
+    \item $\delta$ -- transition function. This is different from a DFA.
+    \item $q_0$ -- start state.
+    \item $F$ -- set accepting states.
+\end{itemize}
+
+$\delta: \Sigma \times Q \to \{ \text{ subsets of $Q$}\} = 2^Q$
+
+$2^Q$ is all subsets of $Q$.
+
+
+\end{document}
+% vim: tw=80
