@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\renewcommand{\hat}{\widehat}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Sep 22, 2011}
+\maketitle
+
+\section{NFAs}
+\subsection{From last class\dots}
+
+Must show $x \in L(N) \iff x \in L(D)$. That is,
+\[
+\hat{\delta_N}(q_0,x)\cap F_N \neq \emptyset \iff \hat{\delta_D}(\{q_0\},x)\cap
+F_D \neq \emptyset 
+\]
+
+Suffices to show that
+\[
+\hat{\delta_N}(q,x) = \hat{\delta_D}(\{q\},x)
+\]
+for any state $q$.
+
+\subsection{Proof}
+
+\textbf{Base Case:}
+
+$|x| = 0,\quad x = \varepsilon$.
+\[
+\hat{\delta_N}(q,x) = \{q\} = \hat{\delta_D}(\{q\},x)
+\]
+
+\textbf{Inductive Step:}
+
+Let $x = ya$. Assume the result holds for $y$, that is
+\[
+\hat{\delta_N}(q,y) = \hat{\delta_D}(\{q\},y)
+\]
+
+Show 
+\begin{eqnarray*}
+    \hat{\delta_N}(q,x) &=&  \hat{\delta_D}(\{q\},x)\\
+    \hat{\delta_N}(q,ya) &=&  \hat{\delta_D}(\{q\},ya)\\
+    \hat{\delta_D}(\{q\},ya) &=&  \delta_D(\hat{\delta_D}(\{q\},y), a)\\
+    \hat{\delta_N}(q,ya) &=&  \hat{\delta_N}(\hat{\delta_N}(q,y), a)\\
+\end{eqnarray*}
+
+By induction hypothesis:
+\[
+\hat{\delta_D}(\{q\},ya) =  \delta_D(\hat{\delta_N}(q,y), a)\\
+\]
+
+By definition of $\hat{\delta_D}$:
+\[
+\delta_D(\hat{\delta_N}(q,y), a) = \bigcup_{p \in \hat{\delta_N}(q,y)}
+\delta_N(p,a)
+\]
+Which is $\hat{\delta_n}(q,ya)$.
+
+
+\section{$\varepsilon$-NFAs}
+
+\subsection{Definition}
+
+Still has
+\begin{itemize}
+    \item $\Sigma$
+    \item $Q$
+    \item $\delta$
+    \item $F$
+    \item $q_0$
+\end{itemize}
+
+$\delta : Q \times \Sigma \cup \varepsilon \to 2^Q$
+
+Takes a state and character or $\varepsilon$ and maps to a set of states.
+
+\subsection{$\varepsilon$ Closure}
+
+$\hat{\delta}(q,y)$: states we get to after processing $y$ at state $q$ and
+having $\varepsilon$-transitions.
+
+$E_{close}(p)$ is all states reachable from $p$ only using $\varepsilon$-transitions.
+
+We define it as:
+\begin{itemize}
+    \item $p \in E_{close}(p)$
+    \item If $q \in E_{close}(p)$, then so are all states in $\delta(q,\varepsilon)$.
+\end{itemize}
+
+Given a set of states, $S$, the enclosure of the set is
+\[E_{close}(S) = \bigcup_{s \in S} E_{close}(s)\]
+
+\subsection{The Extended Transition Function of $\varepsilon$-NFAs}
+
+The extended transition function for $\varepsilon$-NFA is defined as:
+
+\textbf{Base Case:} $\hat{\delta}(q, \varepsilon) = E_{close}(q)$
+
+\textbf{Inductive Case:}
+
+Suppose $w = xa, a \in \Sigma$.
+\[
+\hat{\delta}(q,w) = E_{close}\left(\bigcup_{p \in \hat{\delta}(q,x)}
+\delta(p,a)\right)
+\]
+
+\subsection{Other Stuff}
+
+THe language of an $\varepsilon$-NFA is
+\[
+L = \{ x \in \Sigma^*\ |\ \hat{\delta}(q_0,x) \cap F \neq \emptyset\}
+\]
+
+\subsection{Proving Equality with DFAs}
+
+\textbf{Theorem:} Given an $\varepsilon$-NFA $E$, there exists a DFA $D$ such
+that $L(F) = L(D)$.
+
+\textbf{Lemma:} The converse of the above theorem is true, and proven trivially.
+
+\textbf{Proof Of Theorem:} Given an $\varepsilon$-NFA, $E$, we need to construct a
+DFA so that the DFA accepts the same language as $E$.
+
+\[
+E = \left< \Sigma, \delta_E, F_E, Q_E, q_0 \right>
+\]
+
+Define the DFA,
+\[
+D = \left< \Sigma, \delta_D , F_D ,Q_D, \{q_0\} \right>
+\]
+Where
+\begin{itemize}
+    \item $\Sigma$ is the same.
+    \item $Q_D = 2^Q_E$
+    \item $\delta_D(S,a) = \bigcup_{s \in S} E_{close}(\delta_E(s,a))$
+    \item $F_D =  \{ S \in Q_D\ |\ S \cap F \neq \emptyset \}$
+\end{itemize}
+
+Follow the same type of proof as for NFAs.
+
+\section{Regular Expressions}
+
+Language $L$ is \textit{regular} if one of the following is true:
+\begin{itemize}
+    \item $L$ is the empty language. $L = \emptyset$.
+    \item $L$ is the empty language that has the empty word. $L =
+        \{\varepsilon\}$.
+    \item $L = \{a\}$ for some $a \in \Sigma$.
+    \item $L = L_1^*$ for some regular language $L_1$.
+    \item $L = L_1L_2$ for some regular languages $L_1,L_2$.
+    \item $L = L_1 \cup L_2$ for regular languages $L_1,L_2$.
+\end{itemize}
+
+The Kleene Star is defined as \[L_1^* = \bigcup_{i=1}^{\infty}L_1^i\]
+
+\subsection{Theorem 1}
+
+\textbf{Theorem:} All one-word languages are regular.
+
+\textbf{Proof:} Let $L = \{ w \}$. Perform induction on $n = |w|$.
+
+\textbf{Base Case 1}: $n = 0$, $L = \{\varepsilon\}$. This is true by definition.
+
+\textbf{Base Case 2}: $n = 1$, $L = \{a\}$. This is true by definition.
+
+\textbf{Induction Hypothesis:} Let $w = xa$. Assume $L_1 = \{x\}$ is regular. We
+need to show that $L = \{xa\}$ is also regular.
+
+Let $L_2 = \{a\}$. This is regular by the induction hypothesis. Let $L =
+L_1L_2$. $L$ is regular by definition.
+
+
+\subsection{Theorem 2}
+
+\textbf{Theorem:} If $L$ has a finite number of words, $L$ is regular.
+
+\textbf{Proof:} By induction on $|L|$.
+
+\textbf{Base Case 1:} $L = \emptyset$. This is true by definition.
+
+\textbf{Base Case 2:} $L = \{\varepsilon\}$. This is true by definition.
+
+\textbf{Base Case 3:} $L = \{a\}$. This is true by definition.
+
+\textbf{Inductive Step:} Suppose all finite languages with $k$ words are
+regular. Prove that all languages with exactly $k+1$ words are regular.
+
+Consider language $L_1, |L_1| = k$ and $L_2 = \{a\}$.
+
+Then $L = \{ w_1,w_2,\dots,w_k+1\} = \{w_1,w_2,\dots,w_k\} \cup
+\underbrace{\{w_{k+1}\}}_{\text{Regular by base case}$
+
+\end{document}
+% vim: tw=80
