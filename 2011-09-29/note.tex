@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Sep 29, 2011}
+\maketitle
+
+\textbf{Submit assignment}: on third floor in the pink assignment boxes.
+
+\textbf{For 3.b.}
+For counting minimal \dots
+
+Define variable $t$ as the number of characters output by the algorithm.
+
+Can assume given a state $s$ and character $a$, $\delta(s,a) = O(1)$.
+
+\textbf{For 3.c.}
+
+\section{Kleene's Theorem}
+
+We proved one direction last class, now we will do the other direction.
+
+We can remove states and repolace them with a regular expression.
+
+\subsection{Removing states}
+
+\begin{itemize}
+    \item Add a new start state with $\varepsilon$-transition to the old start
+        state
+    \item Add a new accepting state, $f_1$ with an $\varepsilon$-transition from
+        all old accepting states.
+    \item For each state $1$ what isn't the new start oj accepting state.
+        \begin{itemize}
+            \item For all state pairs $p,r$ that go through $q$
+                \begin{itemize}
+                    \item Let $e_1$ be the label of edge from $p$ to $q$
+                    \item Let $e_2$ be the label of edge from $q$ to $r$
+                    \item Let $e_3$ be the label of loop from $q$ to itself.
+                    \item Let $e_4$ be the label of the edge from $p$ to $r$.
+                    \item Replace label from $p$ to $r$ with $(e_4 +
+                        e_1e_3^*e_2)$.
+                \end{itemize}
+            \item Remove state $q$.
+        \end{itemize}
+    \item End process when only state is accepting state.
+\end{itemize}
+
+\section{The Pumping Lemma}
+
+We want a way to prove that a language is not regular.
+
+A language $L$ is not regular if for every finite automata $M$, $L \neq L(M)$.
+
+Let's say $M$ has $n$ states, $k>n$. This means that if we have a word longer
+than the number of states, then there must be a loop.
+
+Given a F.A. $M$ with $n$ states and a word $x \in L(M)$ where $|x| \geq n$, $x$
+can be divided as $x = uvw$ where
+\begin{itemize}
+    \item $|uv| \leq n$
+    \item $|v| \geq 1$
+    \item $uv^*w \subseteq L(M)$
+\end{itemize}
+
+\subsection{The Formal Pumping Lemma}
+
+Given a regular language $L$, $\exists n>0$ such that all words, $x\in L,\
+|x|\geq n$ can be divided into $u,v,w$ where
+\begin{itemize}
+    \item $uv\leq n$
+    \item $v \neq \varepsilon$
+    \item $uv^iw \in L\quad \forall i\geq 0$
+\end{itemize}
+
+Let $L$ be a language. Suppose that for any positive integer $n$ there exists a
+word $x\in L,\ |x|\geq n$ such that for any division of $x$ into $x=uvw$ with
+$|uv|\leq n$ and $v \neq \varepsilon$. It is not the case that $uv^*w \subseteq
+L$. Then $L$ is not a regular language.
+
+\subsection{Example}
+
+\[
+L = \{0^i1^i|i\geq0\} = \{\varepsilon,01,0011,000111,\dots\}
+\]
+is not a regular language.
+
+We must show no matter what $n$ we have, we cannot ``pump out'' some substring
+$v$.
+
+Consider all decompositions $x = uvw$ where $|uv|\geq n$ and $v \neq
+\varepsilon$.
+
+Choose $x = 0^n1^n$.
+
+$\because \exists i | uv^iw \not \in L$, this is not a regular language.
+\qed
+
+\end{document}
+% vim: tw=80
