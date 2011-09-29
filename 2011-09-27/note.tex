@@ -1,0 +1,117 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Sep 27, 2011}
+\maketitle
+
+\section{Some Stuff Useful for Assignment}
+
+Given a DFA $M$ and a word $x$, does $M$ accept $x$? Yes, simulate it.
+
+Given a DFA $M$ and a word $x$, is $L(M)$ empty? If a final state is reachable
+from a start state, no.
+
+\section{Regular Expressions}
+
+We have the following expressions that are a valid Regular Language.
+$\phi,  \{\varepsilon\},\{d\}\ d \in \Sigma, L_1^* L_1L_2, L_1 \cup L_2$
+
+\subsection{Examples}
+
+\begin{enumerate}
+    \item  $\Sigma = \{0,1\}$ and $\Sigma^* = \{0,1\}^*$ are equivalent to $(0 + 1)^*$.
+
+    \item Write an expression for even length sequences:
+        \[
+        ( (0 + 1)(0 + 1))^*
+        \]
+
+    \item Write an expression for sequences of length at most 3.
+        \[
+        (0 + 1 + \varepsilon)
+        (0 + 1 + \varepsilon)
+        (0 + 1 + \varepsilon)
+        \]
+
+    \item Write an expression for sequences with at most 2 zeroes.
+        \[
+        1^*(0 + \varepsilon)1^*(0 + \varepsilon)1^*
+        \]
+
+\end{enumerate}
+
+\subsection{Rules of Regular Expressions}
+
+\begin{enumerate}
+    \item $\emptyset \varepsilon = \emptyset = \varepsilon \emptyset$
+    \item $\emptyset^* = \varepsilon$
+    \item $x + x = x$
+    \item $(x^*)^* = x^*$
+    \item $x(y + z) = xy + xz$
+\end{enumerate}
+
+\subsection{Kleene's Theorem}
+
+\textbf{Theorem:} All regular languages are the language of a DFA, and all DFAs
+accept a regular language.
+
+\textbf{Proof:}
+
+We well prove that if a language is regular then there exists a DFA that accepts
+it.
+
+It suffices to show that if a language is regular then there exists an
+$\varepsilon$-NFA that accepts it. A regular language is either
+$\{\varepsilon\}, \emptyset, \{d\}$ where $d \in \Sigma, L_1L_2, L_1^*$, or
+$L_1\cup L_2$.
+
+We can write pieces of NFA equivalent to each of these base rules. We then
+perform structural induction on the form of a regular language.
+
+\textbf{Base Case}:
+For $\{\varepsilon\}$ we can have an NFA with just the accepting state.
+For $\emptyset$ we can have an NFA with no accepting state.
+For $\{a\}$ we can have an NFA with an edge from the start state to an accepting
+state on input $a$.
+
+\textbf{Inductive Step}:
+
+Assume there exists $\varepsilon$-NFAs $M_1$ and $M_2$ that accept regular
+languages $L_1$ and $L_2$ respectively.
+
+$L_1\cup L_2$ can be drawn by having a start state with an $\varepsilon$
+transition to the start states of the machines for $L_1$ and $L_2$ respectively.
+
+Then $L_1L_2$ can be drawn by removing the accepting state from $L_1$ and
+pointing it to the start state of $L_2$ on input $\varepsilon$.
+
+Then $L_1*$ can be drawn by removing the accepting state from $L_1$ and pointing
+it to the new start state on input $\varepsilon$. Also allow the start
+state to be an accepting state.
+
+The proof for the Kleene start construction is: suppose $x$ is accepted by the
+machine that we constructed. Show that $x \in L_1^*$. Since $x$ is accepted by
+our machine, then each cycle from the start state to the start state is a
+word from $L_1$, so $x \ in L_1^*$.
+
+The proof in the other direction is: assuming $x \in L_1^*$, show that $x$ is
+accepted by our machine. $\exists n$ such that $x = w_1w_2\dots w_n,\ w_i \in
+L_1,\ 1 \leq i \leq n$ or $x = \varepsilon$. In the second case, $x$ will be
+accepted by the start state. In the first case, our machine accepts $w_i$, then
+goes to the start state again, and can accept $w_{i+1}$.
+
+\end{document}
+% vim: tw=80
