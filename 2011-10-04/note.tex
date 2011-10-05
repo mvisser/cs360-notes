@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Oct  4, 2011}
+\maketitle
+
+\textbf{A2 Posted}
+
+\section{Pumping Lemma}
+
+\textbf{Definition}:
+
+Given a regular language $L$, there ixists some positive $n$ such that $\forall
+x \in L$ with $|x|\geq n$, $x$ can be divided into $x = uvw$, where:
+\begin{itemize}
+	\item $|v|>0$
+	\item $|uv|\leq n$
+	\item $uv^iw\in L \forall i \geq 0$
+\end{itemize}
+
+\textbf{Example}:
+
+$L = \{ 0^p | p \text{ is prime } \} = \{00,000,00000,0000000,\dots\}$
+
+To show that $L$ is not regular, find a word, $x$, so that for any $n$, 
+$|w|\geq n$. FOr any decomposition of $x$ into $uvw$ where \begin{enumerate}
+	\item $|v|>0$
+	\item $|uv|\geq n$
+\end{enumerate}
+$\exists$ some $i$ so that $uv^iw \notin L$
+
+If $L$ was regular, then $\forall j \geq 0, uv^jw \in L$. To show that it is not
+regular, we need to find one value of $j$ such that $uv^jw \notin L$.
+
+How many 0's are there in $uv^iw$? There are $q$ for $u$, $p-q$ for $w$, and $i$
+for $v$. So we find $j$ so that $ji + p-i$ is not prime. Set $j = p-i$, then
+$|uv^jw = j\cdot i + p - i = (i+1)(p-i)$ which is composite. Therefore the
+language is not regular.
+
+\textbf{Example}
+
+$\Sigma = \{0,1\}$,
+$L = \{ s\ |\ s \in \Sigma,\ s = s^R \}$ \textit{i.e.} the language of
+palindromes.
+
+Consider \underline{any} composition of $x$ into $uvw$ so that it meets the
+conditions of the pumping lemma.
+
+$v = 0^j\ j \geq 1$.
+
+Show that $\exists i$ so that $uv^iw \notin L$.
+
+Set $i=0$. Is $uw \in L$? Have $uw=0^{n-j}10^n$, so no.
+
+\textbf{Another Example}
+
+$L = \{y!z \ |\ |y| >|z|,\ y,z \in \{0,1\}^* \}$
+
+Let $x = 0^{n+1}!1^n$
+
+Consider any decomposition of $x$ into $uvw$ so that $|uv| \leq n $ and $v \neq
+\varepsilon$. What does $v$ look like? $v = 0^j$ fo some $j\geq i$. Let's try
+$i=0$. $uv^iw = uw = 0^{n+1-n}!1^n$. This is not in the language because the
+number of 0's must be greater than the number of 1's.
+
+\subsection{What Can Go Wrong}
+
+It's easy to misuse the pumping lemma.
+
+\textbf{One bad decomposition doesn't matter:}
+
+Must show that all decompositions $x = uvw$ with $|uv \leq n$ and $v \neq
+\varepsilon$ can't be pumped.
+
+Consider $L = (01)^*$. This is reqgular. If we use the pumping lemma
+incorrectly, we could show this is irregular. Choose a word $(01)^n$.
+
+Take $u=0,\ v=1,\ w=(01)^{n-1}$
+
+$uv^2w = 011(01)^{n-1}$.
+
+You can't choose:
+\begin{itemize}
+	\item $n$, but we choose the word in terms of $n$.
+	\item The decomposition, but we choose the number of times to pump $v$.
+\end{itemize}
+
+\textbf{The Contrapositive}: If all the words in the language can be pumped, it
+doesn't necessarily mean that the language is regular. This means you can't use
+this lemma to show that a language is regular.
+
+\section{Subsets}
+
+Given $L$ is regular, $L_1 \subseteq L$. Is $L_1$ necessarigly regular
+
+
+\end{document}
+% vim: tw=80
