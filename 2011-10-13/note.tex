@@ -1,0 +1,144 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Oct 13, 2011}
+\maketitle
+
+\section{Midterm}
+
+Covers everything except for CFG's from last class.
+
+\section{Ambiguity in CFGs}
+
+Say we have a grammar $G$. Sometimes there are two different ways to interpret
+the grammar.
+
+Consider
+\begin{equation}
+	G: S \to SS | \texttt{if test:} S | \texttt{if test:} S \texttt{else:} S | foo
+	\label{grammar1}
+\end{equation}
+
+This is ambiguous. Consider
+\begin{verbatim}
+if test:
+    if test:
+        foo
+    else:
+        foo
+\end{verbatim}
+and
+\begin{verbatim}
+if test:
+    if test:
+        foo
+else:
+    foo
+\end{verbatim}
+
+\subsection{Inherent Ambiguity}
+
+\begin{equation}
+	L = \{a^ib^jc^k\ |\ i=j \text{ or } j=k\}
+	\label{language1}
+\end{equation}
+
+Consider $w = d^ib^ic^i$.
+
+A context-free grammar $G$ is \emph{ambiguous} if there exists a word $w \in
+L(G)$ with two different parse trees in $G$.
+
+A Context-free language is \emph{inherently ambiguous} if $\forall G:\ L(G) =
+L$, $G$ is ambiguous, \textit{i.e.}, the language has no unambiguous grammar.
+
+\subsection{A Theorem}
+
+\textbf{Theorem}: If $G$ is the grammar
+\begin{equation}
+	S \to S + S | S * S | (S)|a
+	\label{grammar2}
+\end{equation}
+and $G'$ is the grammar
+\begin{equation}
+	\begin{split}
+	E &\to E + T |T\\
+	T &\to T*F|F\\
+	F &\to(E)|d
+	\end{split}
+	\label{grammar3}
+\end{equation}
+then $L(G) = l(G')$, and $G'$ is unambiguous.
+
+\textbf{Lemmas}
+\begin{itemize}
+	\item If $T \implies^* X$, then $X$ has no $+$ outside of parenthesis.
+	\item If $F \implies^* X$, then $X$ has no + or * outside parenthesis.
+\end{itemize}
+
+\textbf{Lemma}: If $E \to^* X$ or $T \to^* X$ or $F \to^*X$, then there is a
+unique left-most derivation for that sequence from $E$.
+
+\textbf{Proof}: By induction on $|X|$.
+
+\begin{enumerate}
+	\item[\textbf{B.C.}] $|X|=1, X=a$.
+		\[ E \to T \to F \to a \]
+
+	\item[\textbf{I.H.}] Assume that all words of length $<n$
+		have a unique leftmost derivation.
+
+	\item[\textbf{I.C.}] Pick any word $X$ of length $n$ derived from
+		$E,T,\text{ or }F$.
+
+		\begin{enumerate}
+			\item[\textbf{Case 1}] There is a + outside of parenthesis in $X$
+
+				We need to start the derivation with
+				\[ E \to E + T \]
+
+				So $X = Y + Z$ for some $X,Y,Z$.
+
+				Choose $Z$ to be after the last + in $X$ outside of parenthesis.
+				\begin{itemize}
+					\item $Y$ can be derived from $E$ by inductive hypothesis
+					\item $Z$ can be derived from $T$ by inductive hypothesis,
+						since $Z$ has no + outside parenthesis.
+				\end{itemize}<++>
+			\item[\textbf{Case 2}] There is no + outside of parenthesis, but
+				there is * outside parenthesis.
+
+				Start with rule
+				\[ T \to T * F \]
+				then we have $X = y * z$.
+
+				$z$ must correspond to the string right after the last *. By the
+				inductive hypothesis, there is only one way to derive $y$ from
+				$T$ and to derive $z$ from $F$.
+
+			\item[\textbf{Case 3}] There is neither a + or * outside of
+				parenthesis.
+
+				Start with rule
+				\[F \to (E)\]
+				So $X = (y)$ where $E \to^* y$ and $|y|<n$. Therefore, but the
+				I.H., there is a unique derivation.
+		\end{enumerate}
+\end{enumerate}
+\hfill $\blacksquare$
+
+
+\end{document}
+% vim: tw=80
