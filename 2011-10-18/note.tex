@@ -1,0 +1,125 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Oct 18, 2011}
+\maketitle
+
+\section{Midterm}
+
+\textbf{Where and When}
+
+\begin{tabular}{lp{5cm}}
+	Date: & Thursday, Oct 20\\
+	Time: & 2:30 - 3:50\\
+	Room: & MC 4045
+\end{tabular}
+
+\textbf{Office Hours}
+
+\begin{tabular}{lll}
+	\textbf{T.A.} & \textbf{Hours} & \textbf{Room} \\
+	Soumojit & Wed 12-1 & DC 2302C\\
+	Jalaj & Wed 3-4 & DC 3324\\
+	Rita & Thur 12-1 & DC2515\\
+\end{tabular}
+
+\subsection{What to Study}
+
+Everything up to and not including context-free languages, especially
+\begin{itemize}
+	\item Pumping Lemma ***
+	\item Closure  properties
+	\item Constructing DFAs, NFA,s $\varepsilon$-NFAs, regular expressions.
+\end{itemize}
+
+\section{Regular Language Enumeration}
+
+Three new Algorithms for Regular Language Enumeration.
+
+Given an NFA and an integer $n$, find the lexographically minimal word of length
+$n$ accepted by the NFA.
+
+\section{Context Free Grammar Languages}
+
+$G: S \to S+S\ |\ S*S\ |\ (S)\ |\ a$
+
+$G'$ is defined as
+\begin{eqnarray*}
+	E &\to& E + T \ |\  T\\
+	T &\to& T * F \ |\  F\\
+	F &\to& (E)\ |\ a
+\end{eqnarray*}
+
+\textbf{Theorem}: $L(G)=L(G')$, and $G'$ is unambiguous.
+\begin{proof}
+	We will show that $L(G) \subseteq L(G')$ and $L(G') \subseteq L(G)$.
+
+	First we show that $L(G') \subseteq L(G)$ by induction on the length of $x$.
+	If $x \in L(G')$ then $x \in L(G)$.
+
+	\begin{description}
+		\item[\textbf{Base Case}]
+			
+			$|x|+1$ Then we have the rule $x \to a$ applied.
+		\item[\textbf{I.C.}] 
+
+			$\forall w$ such that $|x|<|x| \in L(G')$ $w$ also occurs in $L(G)$.
+			There are three cases here.
+			\begin{enumerate}
+				\item $x$ derives from the rule $E \to E + T$
+
+					We then have $x = y + z$ where $E \to^* y$ and $T \to^* z$.
+					This implies that we can derive $z \in G'$ using $E \to
+					T\to^* z$
+					This implies that we can derive $y \in G'$ using $E$. The
+					lengths $|y|,|z|<|x|$ then $y,z \in L(G)$ by the induction
+					hypothesis.
+
+					We can derive $x$ in $G$ by using $S \to S + S$ since we
+					know $S \to^*y$ and $S \to^*z$.
+
+				\item $x$ derives from the rule $E \to T \to T * F$
+
+					Then $x = y*z$, where $T \to^*y, F \to^*z$.
+
+					So $y$ and $z$ are shorter than $x$, so $y,z \in L(G)$ by
+					the induction hypothesis. So $S \to^*y$ and $S \to^*z$, so
+					we use the rule $S \to S*S$ to generate the word $x$.
+
+				\item $x$ derives from the rule $E \to T \to F \to (E)$
+
+					Follow same principle as cases 1-2.
+			\end{enumerate}
+	\end{description}
+
+	Now we show that $L(G) \subseteq L(G')$. We have three cases:
+	\begin{enumerate}
+		\item $x$ has a derivation of the form $S \to (S) \to^* (y)$
+		\item $x$ has no such derivation $S \to (S) \to^* (y)$, but does have a
+			derivation of the form $S \to S+S\to^*y+z$
+
+			We want to show that $y,z \in L(G')$ We want to use the rule $E \to
+			E + T$ in $G'$.
+
+			Choose $z$ to be $x$ after the rightmost + sign outside of brackets.
+			$E \to T \to^*z$. So to derive in $G'$, $E \to E + T \to^*x$.
+		\item The only derivation for $x$ starts by using the rule $S \to S*S$.
+	\end{enumerate}
+	
+\end{proof}
+
+\end{document}
+% vim: tw=80
