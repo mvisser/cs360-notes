@@ -1,0 +1,6 @@
+digraph pda2{
+	rankdir=LR;
+	q_0 -> q_0 [label="pushing"];
+	q_0 -> q_1 [label="\varepsilon:\varepsilon/\varepsilon"];
+	q_1 -> q_1 [label="popping"];
+}

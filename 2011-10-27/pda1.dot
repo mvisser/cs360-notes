@@ -1,0 +1,7 @@
+digraph pda1 {
+	rankdir=LR;
+	q_0 -> q_0 [label="\begin{matrix}a:Z_0/0Z_0\\\\a:0/00\end{matrix}"];
+	q_0 -> q_1 [label="1:0/\varepsilon"];
+	q_1 -> q_1 [label="\begin{matrix}1:0/\varepsilon \\\\ \varepsilon:z_0/\varepsilon\end{matrix}"];
+
+}

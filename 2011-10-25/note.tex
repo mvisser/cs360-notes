@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Oct 25, 2011}
+\maketitle
+
+\section{Taking Up the Midterm}
+
+\subsection{Part 1d}
+
+Note that this is a strict subset. Same as the algorithm for $L_1 \subseteq L_2$
+only not equal.
+
+\subsection{Part 2b}
+
+$0^*(1^+0^+)^*1^*0^*$
+
+\subsection{Part 3}
+
+\begin{itemize}
+	\item \textbf{Should not have lost a couple of the marks}
+	\item Didn't think of the case where we have $0^0$, so if we pumped, then we
+		could end up with that. Should add a case where $i>1$.
+\end{itemize}
+
+\section{CFG Machines}
+
+What we have is basically an NFA with a stack as well. These machines can
+accept CFGs. These machines are called \emph{push-down automata}.
+
+\section{Transitions of Push-Down Automata (PDA)}
+
+Each transition is of the form:
+\begin{itemize}
+	\item If top letter on the stack is $b$ and next letter in the input is $a$,
+		(or $\varepsilon$ if we don't need an input letter) and we are in state
+		$q$, then  
+		\begin{itemize}
+			\item go to state $r$
+			\item take $b$ off the top of the memory stack
+			\item eat letter $a$ from the input
+			\item write word $w$ onto the top of the stack
+		\end{itemize}
+\end{itemize}
+
+Define a \emph{Push-Down Automata} in a 7-tuple
+$M=\left<Q,\Sigma,\Gamma,\delta,q_0,Z_0,F\right>$
+\begin{itemize}
+	\item $Q$ --- state
+	\item $\Sigma$ --- input of alphabet
+	\item $\Gamma$ --- finite stack alphabet (often, input $\Gamma = \{Z_0\}\cup
+		\Sigma$
+	\item $\delta$ --- transition function
+	\item $Z_0$ ---stack start letter (bottom of stack character)
+	\item $F$ --- finish states
+\end{itemize}
+
+We define the transition functions as
+\[
+d: Q \times (\Sigma \cup \{\varepsilon\}) \times \Gamma \to \text{finite subsets
+of } Q \times \Gamma^*
+\]
+The input is a triple (state, input character, stack character). The output is a
+finitely many pairs (state, string over $\Gamma^*$.
+
+\subsection{Instantaneous Description of a PDA}
+
+We have $(q,w,\gamma)$
+\begin{itemize}
+	\item $q$ is the state that the machine is on
+	\item $w$ is what's left of the word
+	\item $\gamma$ is what's currently on the stack
+\end{itemize}
+
+We use the notation $(q,z,\gamma) \vdash (p,w,\alpha)$ to denote ``produces
+in one step''.
+
+Suppose that we are at $(q,z,\gamma)$ and that we can take an
+$\varepsilon$-transition. Let $\gamma = X\beta$:
+\begin{itemize}
+	\item We must follow $\delta(q,\varepsilon,X)$. Suppose that
+		$(p,\bar{\alpha}) \in \delta(q,\varepsilon,X)$
+	\item This brings us to instantaneous description $(p,Z,\alpha\beta$.
+\end{itemize}
+
+\end{document}
+% vim: tw=80
