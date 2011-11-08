@@ -1,0 +1,116 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{float}
+\usepackage[colorlinks]{hyperref}
+\usepackage[x11names, rgb]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+
+\newtheorem{thm}{Theorem}[section]
+\newcommand{\der}[1]{\ensuremath{\overset{#1}{\Rightarrow}}}
+\numberwithin{equation}{subsection}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov  3, 2011}
+\maketitle
+
+\section{Deterministic PDAs}
+
+In a DPDA, every move is fixed.
+
+\begin{itemize}
+	\item If $ |\delta(q,a,X)| = 1$ for some letter $a$ then
+		$|\delta(q,\varepsilon,X)|= 0$
+	\item And $|\delta(q_0,a,X)|\le 1$ for all pairs $(q_0,a)$ (including $a =
+		\varepsilon$) and $X$.
+	\item For any state, letter, and stack symbol, we can only do one thing.
+\end{itemize}
+
+\subsection{Example}
+
+Use the language
+\begin{equation}
+	L = \{ x \in \{a,b\}^* | n_a(x) > n_b(x) \}
+	\label{eq:ex1}
+\end{equation}
+
+We have a DPDA starting at state ``equal''
+\begin{figure}[H]
+	\input{ex1.tex}
+	\caption{A DPDA describing the language in equation \ref{eq:ex1}}
+	\label{fig:ex1}
+\end{figure}
+
+\subsection{Example}
+
+A DPDA has no way of telling when its input is finished. Consider the language
+of a palindrome.  Since we have no way of knowing how long our input is, we
+can't accept these languages. If we accept too early, we reject the word, if we
+accept that the end, we will still reject.
+
+\subsection{Ambiguity and DPDA vs PDA}
+
+A DPDA cannot accept an ambiguous grammar. If we convert from a DPDA to a NDPDA,
+we will still have something that is unambiguous.
+
+\begin{tabular}{p{0.5\textwidth}|p{0.5\textwidth}}
+	\multicolumn{1}{c|}{PDA} & \multicolumn{1}{c}{DPDA} \\
+	\hline
+	\begin{itemize}
+		\item Also an NFA
+		\item accepts context-free languages
+	\end{itemize}
+	&
+	\begin{itemize}
+		\item A DFA
+		\item Accepts context-free languages
+		\item The context-free languages that are accepted are unambiguous.
+	\end{itemize}
+\end{tabular}
+
+\section{Chomsky Normal Form}
+
+\begin{itemize}
+	\item $A \to BC$ where $A,B,C$ are variables.
+	\item $A \to a$ where $A$ is variable and $a$ is terminal
+\end{itemize}
+
+\begin{thm}
+	Given any CFG $G$, there exists a CFG $G'$ in LNF that accepts the same
+	language as $G$ except for $\varepsilon$.
+\end{thm}
+
+A variable $A$ is \emph{nullable} If $A \der{*} \varepsilon$
+
+If $A$ is nullable, and there is a rule $B \to AC$, we could replace it
+with $B \to C$
+
+Base: $A \to \varepsilon$
+
+Recursive case:  $A \to B_1B_2\dots B_k$ where $B_1$ is nullable
+$\forall 1\le i \le k$.
+
+\begin{itemize}
+	\item $(A,B)$ is a \emph{unit pair} if $A \der B$.
+	\item $(A,A)$ is a unit pair for any variable $A$.
+	\item If $(A,B)$ is a unit pair and $B \to C$ then $(A,C)$ is a unit pair.
+\end{itemize}
+
+Suppose we have a grammar in CNF with $n$ variables. Consider a parse tree in
+that grammar for the word $z,\ |z|=k$.
+
+
+\end{document}
+% vim: tw=80

@@ -1,0 +1,14 @@
+digraph ex1 {
+	rankdir=LR;
+	node [shape = doublecircle];
+	more;
+	node [shape = circle];
+	equal ; less ;
+
+	equal -> more [label="a:Z_0/Z_0"];
+	more -> more [label="\\begin{matrix} a:Z_0/aZ_0 \\\\ a:a/aa \\\\ b:a/\varepsilon \\end{matrix}" ];
+	more -> equal [constraint="false",label="b:Z_0/Z_0"];
+	equal -> less [label="bZ_0/Z_0"];
+	less -> equal [label="aZ_0/Z_0"];
+	less -> less [label=" \\begin{matrix} b:Z_0/bZ_0 \\\\ b:b/bb \\\\ a:b/\varepsilon \\\\ \\end{matrix} "];
+}

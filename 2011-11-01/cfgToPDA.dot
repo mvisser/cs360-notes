@@ -1,0 +1,6 @@
+digraph cfgToPDAA {
+ node [shape=circle];
+ a;
+
+ a -> a [label="\\begin{matrix} \\varepsilon: S/aSa \\\\ \\varepsilon: S/bSb \\\\ \\varepsilon: S/b \\\\ \\varepsilon: S/a \\\\ \\varepsilon: S/\\varepsilon \\\\ \\end{matrix}"];
+}

@@ -1,0 +1,6 @@
+digraph cfg1PDA {
+	node [shape=circle];
+	q;
+
+	q -> q [label=" \\begin{matrix} \\varepsilon: A/\\beta \\text{ for all } A \\to \beta \\\\ a: a/\\varepsilon \\text{ for all } a \\in \\Sigma \\\\ \\end{matrix}" ];
+}
