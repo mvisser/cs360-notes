@@ -1,0 +1,41 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 10, 2011}
+\maketitle
+
+\section{Turing Machines}
+
+We can represent a turing machine as a finite automaton plus a memory tape. We
+can only see one letter of memory at a time.
+
+Formally:
+\begin{equation}
+	M = \left<Q,q_0,F,\Sigma,\Gamma,\beta,\delta\right>
+\end{equation}
+where $\Gamma$ is the tape alphabet, and $\beta$ is the blank character for a tape.
+$\delta$ is a transition
+\begin{equation}
+	\delta: Q \times \Gamma \to Q \times \Gamma \times \{L,R\}
+\end{equation}
+Thie transition function need not be a full function. It takes a current state
+and an input letter, then outputs a new state, a letter to write at the current
+place in the tape, and a direction to move.
+
+This machine accepts at an accepting state.
+
+\end{document}
+% vim: tw=80
