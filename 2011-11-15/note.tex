@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\newtheorem{exmpl}{Example}
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 15, 2011}
+\maketitle
+
+\section{Pumping Lemma For CFG}
+
+\begin{thm}
+Let $L$ be a language. Suppose that $\forall n > 0$: there exists a word
+$z \in L$ with $|z|>n$ such that any division of $z = uvwxy$ where $|vwx|\le n$
+there exists an $i \ge 0$ such that $uv^iwx^iy \notin L$ then $L$ is not
+context-free.
+\end{thm}
+
+\begin{exmpl}
+
+$L = \{a^ib^ic^i|i \ge0\}$
+
+Consider $z = a^nb^nc^n$ with a decomposition $z=uvwxy$ where $|vwx|\le n$ and
+$|vx| \ge 0$.
+
+$v$ and $x$ consist of at most 2 types of characters, that is $vx$ can include
+all of $a$,$b$, and $c$, because otherwise $vux$ would have to be at least $n+1$
+characters. Say $i=2$. $uv^2wx^2y \notin L$ because at most 2 types of
+characters occur more often than in $z$, but not all the types.
+\end{exmpl}
+
+\begin{exmpl}
+	$L = \{ a^ib^jc^k|i<j, i<k\}$
+
+	$z = a^nb^n+1c^n+1$
+
+	Consider any decomposition of $z$ into $uvwxy$.
+
+	\begin{enumerate}
+		\item[Case 1.] Contains no $a$'s. $i=0$ drops the numbers of b or c, and
+			they coudl be 0, so then it wouldn't be in the language.
+		\item[Case 2.]  \dots bored
+	\end{enumerate}
+\end{exmpl}
+
+\section{Closure Properties for CFGs}
+
+Regular languages are closed under: union, complement, intersection, reversal,
+concatenation, kleene star.
+
+\subsection{Union}
+
+$G_1: S_1\to\dots$
+
+$G_2: S_2 \to \dots$
+
+$G: S \to S_1 | S_2$
+
+\subsection{Concatenation}
+
+$G: S \to S_1S_2$
+
+\subsection{Kleene Star}
+
+$G: S \to SS_1 | \varepsilon$
+
+\subsection{Reversal}
+
+Create $G$ by reversing all production rules.
+
+\subsection{Intersection}
+
+$L = \{a^ib^ic^i|i \ge 0\}$, which is not context-free.
+
+$L_1 = \{a^ib^ic^j| i,j \ge 0\}$
+
+$L_1 = \{a^jb^ic^i| i,j \ge 0\}$
+
+$L_1 \cap L_2 = L$ which is not context-free.
+
+\section{Number of Steps}
+
+\begin{thm}
+	Consider a word $w$ where $|w| = n$, then any derivation of $w$ in a grammar
+	in CNF will have $2n-1$ steps.
+\end{thm}
+
+Given a CFG, does the language include the word $w$?
+
+Convert this grammar to CNF. Enumerate all derivations of length
+$2|w| - 1$ and see if any of them derive $w$.
+
+\section{Turing Machines}
+
+
+\end{document}
+% vim: tw=80
