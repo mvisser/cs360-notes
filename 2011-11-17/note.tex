@@ -1,0 +1,101 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+%\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 17, 2011}
+\maketitle
+
+\section{Turing Machines}
+
+\subsection{The Church-Turing Thesis}
+
+Turing machines are equivalent to any reasonable computation model \textit{i.e.}
+capture what can be computed by a machine. We can't, however, prove this.
+
+\subsection{Non-Determinism in Turing Machines}
+
+A non-deterministic TM can have multiple values for $\delta(q,a)$.
+
+\begin{itemize}
+	\item There must be a finite number of entries.
+	\item We know that $(q,yx) \vdash (p,wz)$ if \emph{one} of the transitions in
+		$\delta(q,x)$ gets us to the second configuration.
+	\item The non-deterministic machine accepts on input $x$ if a valid
+		computation exists that brings us from the starting configuration to an
+		accepting configuration (in a final state).
+\end{itemize}
+
+\begin{exmpl}[Non-Deterministic TM]
+	\begin{equation}
+		L = \{ ww | w \in \{a,b\}^*, w \neq \varepsilon \}
+		\label{eq:ex1Lang}
+	\end{equation}
+
+	\begin{itemize}
+		\item ``Guess'' the middle position, and then just check.
+	\end{itemize}
+
+	Some notation: $(\underbrace{a}_{\text{Left head
+	before}},b)/(\underbrace{c}_{\text{Left head
+	after}},d),\underbrace{R}_{\text{Left head shift}}L$
+
+	FA left to do later.
+\end{exmpl}
+
+\begin{thm}
+	If $L$ is the language accepted by a non-deterministic Turing machine $M$,
+	there exists a deterministic Turing Machine $M'$ that also accepts $L$.
+	\begin{proof}
+		We can convert a non-deterministic TM so that at any state we only have
+		two choices.
+
+		The deterministic Turing machine just walks through every possible path
+		in the non-deterministic machine, $M$. If it finds an accepting path, it
+		accepts, otherwise, it keeps going until it has no more paths to try, or
+		never terminates.  
+	\end{proof}
+\end{thm}
+
+\section{Computability}
+
+\subsection{Definitions}
+
+There are different types of languages that we can compute using a Turing
+Machine.
+
+A language $L$ is \emph{decidable} or recursive if \dots
+\begin{itemize}
+	\item a Turing machine, $M$, such that $L(M)=L$ and $M$ halts on all input.
+\end{itemize}
+
+A language $L$ is \emph{recursively enumerable}
+\begin{itemize}
+	\item There exists a Turing machine $M$ such that $L(M)=L$.
+\end{itemize}
+
+Set $S$ and $T$ are of \emph{equal cardinality} if $\exists$ a bijection $f:S
+\to T$.
+
+$S = \{\text{even integers}\}, T = \{\text{all integers}\}, f(x) = x/2$.
+
+A set $S$ is \emph{countably infinite} when it has the same cardinality as
+$\mathbb{Z}$ or any infinite subset of it.
+
+
+\end{document}
+% vim: tw=80
