@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+\newtheorem{defn}{Definition}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 22, 2011}
+\maketitle
+
+\section{Church-Turing Thesis}
+
+A set $S$ is \emph{countable} if $S$ has the same cardinality as a subset of
+$\mathbb{Z}$.
+
+A set is \emph{uncountable} if it is not countable.
+
+$S = \mathbb{R} \cap [0,1]$ $S$ is ouncountable. By way of contradiction, assume
+$S$ is uncountable.
+
+\subsection{Representing TMs using Finite Sequences of 0s and 1s}
+
+$\delta: Q \times \Gamma \to Q \times \Gamma \times \{L,R\}$. We can convert the
+transitions to a table.
+
+Every turing machine can be represented as a finite string of 0's and 1's. Call
+this representation $f(M)$.
+
+Since we can represent turing machines as a finite string of  0's and 1's, there
+are countably many turing machines.
+
+\subsection{How Many Languages}
+
+$L \subseteq \{a\}^* = \{\varepsilon,a,aa,aaa,\dots\}$
+
+How many languages are there that are subsets of $\{a^*\}$?
+
+Given any $L \subseteq \{a\}^*$, we can represent $L$ as a real number between 0
+and 1 in binary, but setting the $i^{\text{th}}$ digit after. The decimal point
+to 1 iff $a^i \in L$, so there are uncountably many languages.
+
+Since there are uncountably many languages, but countably many turing machines,
+there does not exist a turing machine to accept every lanuage.
+
+\subsection{Examples}
+
+\begin{defn}
+	A language $L$ is recursively enumerable if $\exists T \text{ s.t. } L(T) =
+	L$.
+\end{defn}
+
+\begin{defn}
+	A language $L$ is decideable if $\exists T \text{ s.t. } L(T) =
+	L$ and $T$ halts on all inputs.
+\end{defn}
+
+$L_{SA} = \{x|x \text{ is the identifier for a TM that accepts $x$}\}$
+
+$L_{NSA} = \{x | x \text{ is the identifier of some TM that does not accept
+istelf}\}$.
+
+\begin{thm}
+	$L_{NSA}$ is not the language of any turing machine.
+
+	\begin{proof}
+
+		Pick any TM, $M$. Well show that $L(M) \neq L_{NSA}$. By way of
+		contraditction, assume $L(M) = L_{NSA}$.
+		\begin{enumerate}
+			\item $M$ accepts $f(M)$. Is $f(m) \in L_{NSA}$? No. So $M$ does not
+				accept $F(M)$.
+			\item $M$ does not accept $F(M)$. Is $F(M) \subset L_{NSA}$? Yes.
+				Because $L(M) = L_{NSA}$ then $M$ should accept $f(M)$.
+		\end{enumerate}
+
+		So $L(M) \neq L_{NSA}$.
+
+	\end{proof}
+\end{thm}
+
+
+\end{document}
+% vim: tw=80
