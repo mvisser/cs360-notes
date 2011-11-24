@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\newtheorem{exmpl}{Example}
+\newtheorem{defn}{Definition}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 24, 2011}
+\maketitle
+
+\section{Universal Turing Machine}
+
+\begin{equation}
+	L = \{(f(M),w):w \in L(M) \}
+\end{equation}
+
+This language is recursively enumerable:
+\[U(T,w)\]
+\begin{itemize}
+	\item If $M$ accepts $w$, then $U$ will accept $f(M),w)$.
+	\item If $M$ rejects $w$, then $U$ will reject $f(M),w)$.
+	\item If $M$ loops forever on $w$, then so will $U$ on $(F(M),w)$.
+\end{itemize}
+
+How do we make $U$?
+
+Simultate $M$ on input $w$, we want to keep track of
+\begin{itemize}
+	\item current state of $M$'s tape.
+	\item Current state in $M$.
+	\item Scratch work.
+\end{itemize}
+
+\begin{thm}
+	By way of contradiction, assume that there exists a TM $U'$ that decides
+	$L_U$. We'll show that the existence of $U'$ implies that $L_{NSA}$ is
+	decideable.
+
+	\begin{proof}
+		Here is hwo to make $M_{NSA}$ that decides $L_{NSA}$ on input $w$:
+		\begin{itemize}
+			\item Run $U'$ on input $w,w$
+			\item If $U'$ accepts $(w,w)$, then reject.
+			\item If $U'$ rejects $(w,w)$, then accept.
+		\end{itemize}
+	\end{proof}
+\end{thm}
+
+\begin{thm}
+	$L_{SA}$ is not decideable.
+	\begin{proof}
+		Argue that there doesn't exist any TM $M$ that decides $L_{SA}$.
+
+		Suppose we have a machine $M'$ that decides $L_{SA}$. Recall
+		$L_{NSA}$ isn't decideable. Therefore, $L_{SA}$ is not decideable.
+	\end{proof}
+\end{thm}
+
+\begin{thm}
+	If $L$ is decideable, then so is its complement, $L'$.
+	\begin{proof}
+		Since $L$ is decideable, $\exists M$ that decides $L$. Construct $M'$
+		that decides $L'$ by running $L$ and then reversing the result.
+	\end{proof}
+\end{thm}
+
+Given that $L$ and its complement, $L'$, are recursively enumerable, is $L$
+necessarily decideable?
+
+Let $M$ be a machine where $L(M) = L$.
+Let $M'$ be a machine where $L(M') = L'$.
+Run both machines in tandem. On every input, one of the machines will accept
+since the languages are complements. If $M$ accepts, then accept, if $M'$
+accepts, then reject. We have built a machine that decides $M$.
+
+The intersection of recursively enumerable languages are recursively enumerable:
+\begin{itemize}
+	\item Just run both TMs. If one accepts, run the other. Accept if it
+		accepts.
+\end{itemize}
+The union of r.e. languages:
+\begin{itemize}
+	\item Run both and accept if either one accepts.
+\end{itemize}
+
+Given $f(M)$, is the language of $M$ non-empty?
+\begin{equation}
+	L_{NE} = \{w | w = f(M) \land L(M) \neq \emptyset\}
+\end{equation}
+Is $L_{NE}$ recursively enumerable? Try every word.
+
+\end{document}
+% vim: tw=80
