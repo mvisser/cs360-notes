@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\begin{document}
+
+\newtheorem{thm}{Theorem}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Nov 29, 2011}
+\maketitle
+
+\begin{equation}
+	L_{NE} = \{ f(M): L(M) \neq \emptyset \}
+\end{equation}
+Show that $L_{NE}$ is not decidable.
+
+\textbf{Problem}:
+
+Given a TM $M$, is its language empty?
+
+We'll show that this problem is not decidable.
+
+$U'$ is the universal decider: It takes $(M,w)$, accepts if $w \in L(M)$. We
+showed earlier that $U'$ does not exist.
+
+Assume by way of contradiction that there is a machine $M_{NE}$ that decides
+$L_{NE}$. This will imply that $U'$ exists. Because it does not exist, this is a
+contradiction. So $L_{NE}$ is not decidable.
+
+If $U'$ accepts then $M_{NE}$ accepts $M$. So $L(M') \neq \emptyset$. So $L(M')
+= \{0,1\}^*$. So $M$ accepts $w$. If $U'$ rejects, then $M_{NE}$ rejected $M'$,
+so $L(M') = \emptyset$. So $M$ doesn't accept $w$.
+
+\begin{equation}
+	L_E = \{ f(M): L(M) = \emptyset \}
+\end{equation}
+
+Is this decidable? Recursively enumerable?
+
+What's the complement of $L_E$? $L_{E}' = L_{NE} \cup \{w | w \text{ is not the
+encoding of any Turing machine}\}$.
+
+Is $L'_{E}$ r.e.? Yes.
+
+So if $L_{E}$ is r.e., then $L_{E}$ and $L'_E$ are recursively enumerable. If
+$L'_E$ is decidable, then so is  $L_{NE}$ Therefore $L_E$ is not recursively
+enumerable.
+
+\begin{thm}
+	$L_e$ is not r.e. and so also not decidable.
+	\begin{proof}
+		We know that $L_{NE}$ is .r.e.
+		\begin{enumerate}
+			\item $L'_e = L_{NE} \cup \{ w | \text{$w$ is not an encoding of a
+				Turing Machine}\}$
+			\item Since $L_{NE}$ is r.e., so is $L'_e$.
+			\item Assume that $L_E$ is r.e.
+			\item So $L_e$ and $L'_E$ are both decidable.
+			\item Since $L'_E$ is decidable, so is $L_{NE}$, A contradiction.
+		\end{enumerate}
+	\end{proof}
+\end{thm}
+
+\begin{equation}
+L_\infty = \{f(M): L(M) = \infty \}
+\end{equation}
+
+$L_\infty$ is undecidable.
+
+
+
+\end{document}
+% vim: tw=80
