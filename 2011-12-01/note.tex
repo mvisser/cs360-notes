@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{stmaryrd}
+\usepackage{listings}
+\usepackage{fullpage}
+
+\newtheorem{thm}{Theorem}
+
+\begin{document}
+
+\title{CS 360 Notes}
+\author{Matthew Visser}
+\date{Dec  1, 2011}
+\maketitle
+
+\section{Rice's Theorem}
+\begin{thm}
+	Let $P$ be a property held by some but not all recursively enumerable
+	languages. Then the language
+	\begin{equation}
+		L_p = \{f(M) | L(M) \text{ satisfies } P \}
+	\end{equation}
+	is undecidable.
+\end{thm}
+
+Property $P$ can be the property of being infinite. Then
+\begin{equation}
+	L_p = \{ f(M) : |L(M)| = \infty \}
+\end{equation}
+
+Need to show that $\exists T_1$, a turing machine, that satisfies the property and
+$\exists T_2$  that fails this property.
+
+$T_1$ the TM that accepts $0^*$ (exists because $O^*$ is regular.
+
+$T_2$ is the TM that accepts $\emptyset$ (exists because it is regular.
+
+Then by Rice's theorem, $L_P = L_{\infty}$ is undecideable.
+
+\begin{proof}[Proof of Rice's Theorem]
+	We have * cases:
+	\begin{enumerate}
+				
+		\item Suppose $\emptyset$ doesn't satisfy $P$.
+			\begin{itemize}
+				\item Pick a recursively enumerable languag $L$ that satisfies
+					$P$.
+				\item Assume $M_L$ accepts $L$.
+				\item Assume by way of contradiction that there exists a TM,
+					$M_P$ that decides $L_P$.
+			\end{itemize}
+		\item Suppose $\emptyset$ does satisfy property $P$.
+			\begin{itemize}
+				\item Then consider property $P'$, which is the opposite of
+					property $P$.
+				\item Then the empty set will not satisfy $P'$. We can then use
+					the first case for the rest of the proof.
+				\item If $P$ is decidable, then $P'$ is as well, which is a
+					contradiction, therefore it is undecidable.
+			\end{itemize}
+	\end{enumerate}
+\end{proof}
+
+Given $M_1$ and $M_2$
+\begin{itemize}
+	\item DO they accept the same language?
+	\item $L(M_1) \subseteq L(M_2)$?
+	\item Are $L(M_1)$ and $L(M_2)$ disjoint?
+	\item Let $M_2$ be a machine that rejects all inputs, so $L(M_2) =
+		\emptyset$.
+	\item Let $M_3$ be a machine that accepts all inputs.
+
+		Assume by way of contradiction that we have a decider for this. Given a
+		TM, $M$, testing if $L(M_1) = L(M_2)$ we can use this to test against
+		the empty language.
+\end{itemize}<++>
+
+\end{document}
+% vim: tw=80
